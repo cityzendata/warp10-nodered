@@ -27,3 +27,20 @@ In the config of the warpscript, it possibles to enter as many output as possibl
       '2' { 'payload' 'test' }
   }
 ```
+
+## Set-UP
+
+To install a new node just configure the setting file of the installed node-red server located in 
+
+```
+/Home/user/.node-red/settings.js
+```
+Link nodesDir properties to a directory path
+
+```
+nodesDir = '/Your/path/nodes'
+```
+
+Then add both warpscript.html and warpscript.js files in this folder. 
+
+Restart node-red.
