@@ -1,0 +1,109 @@
+<script type="text/javascript">
+    RED.nodes.registerType('warpscript',{
+        category: 'function',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value:""},
+            warpurl: {value:""},
+            warp: {value:"'msg' STORE \n$msg"},
+            outputs: {value:1}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "white-globe.png",
+        label: function() {
+            return this.name||"warpscript";
+        },
+        oneditprepare: function() {
+            var that = this;
+            $( "#node-input-outputs" ).spinner({
+                min:1
+            });
+            this.editor = RED.editor.createEditor({
+                id: 'node-input-warp-editor',
+                value: $("#node-input-warp").val(),
+                globals: {
+                    msg:true,
+                    context:true,
+                    RED: true,
+                    util: true,
+                    flow: true,
+                    global: true,
+                    console: true,
+                    Buffer: true,
+                    setTimeout: true,
+                    clearTimeout: true,
+                    setInterval: true,
+                    clearInterval: true
+                }
+            });
+            RED.library.create({
+                url:"warpscript", // where to get the data from
+                type:"function", // the type of object the library is for
+                editor:this.editor, // the field name the main text body goes to
+                fields:['name','outputs', 'warpurl']
+            });
+            this.editor.focus();
+        },
+        oneditsave: function() {
+            var annot = this.editor.getSession().getAnnotations();
+            this.noerr = 0;
+            $("#node-input-noerr").val(0);
+            for (var k=0; k < annot.length; k++) {
+                //console.log(annot[k].type,":",annot[k].text, "on line", annot[k].row);
+                if (annot[k].type === "error") {
+                    $("#node-input-noerr").val(annot.length);
+                    this.noerr = annot.length;
+                }
+            }
+            $("#node-input-warp").val(this.editor.getValue());
+            delete this.editor;
+        },
+        oneditresize: function(size) {
+            var rows = $("#dialog-form>div:not(.node-text-editor-row)");
+            var height = $("#dialog-form").height();
+            for (var i=0;i<rows.size();i++) {
+                height -= $(rows[i]).outerHeight(true);
+            }
+            var editorRow = $("#dialog-form>div.node-text-editor-row");
+            height -= (parseInt(editorRow.css("marginTop"))+parseInt(editorRow.css("marginBottom")));
+            $(".node-text-editor").css("height",height+"px");
+            this.editor.resize();
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="warpscript">
+  <div class="form-row">
+      <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+      <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-warpurl"><i class="fa fa-globe"></i> Warp 10 Url</label>
+    <input type="text" id="node-input-warpurl" placeholder="http://">
+  </div>
+
+  <div class="form-row" style="margin-bottom: 0px;">
+    <label for="node-input-warp"><i class="fa fa-wrench"></i> WarpScript</label>
+    <input type="hidden" id="node-input-warp" autofocus="autofocus">
+    <input type="hidden" id="node-input-noerr">
+  </div>
+
+  <div class="form-row node-text-editor-row">
+    <div style="height: 250px; min-height:150px;" class="node-text-editor" id="node-input-warp-editor" ></div>
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-outputs"><i class="fa fa-random"></i> <span data-i18n="function.label.outputs"></span></label>
+    <input id="node-input-outputs" style="width: 60px;" value="1">
+  </div>
+</script>
+
+<script type="text/x-red" data-help-name="warpscript">
+  <p>
+    Node to execute some WarpScript.
+    When receiving a message it pushes it with the associated WarpScript (given as parameter) on a stack using the exec endpoint of the Warp 10 API.
+    When the request end, one message per elements on the resulting stack is send as output of this node.
+  </p>
+</script>
