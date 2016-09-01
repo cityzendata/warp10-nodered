@@ -1,6 +1,6 @@
 # Node WarpScript #
 
-This module can be used to execute some WarpScript with node-red. This will be done by executing an HTTP POST to the (Warp 10)[http://www.warp10.io/] url indicated in the warpscript node config.
+This module can be used to execute some WarpScript with node-red. This will be done by executing an HTTP POST to the [Warp 10](http://www.warp10.io/) url indicated in the warpscript node config.
 
 ## Input 
 
@@ -14,7 +14,7 @@ A message on WarpScript have the following form:
 
 ## Execute custom WarpScript
 
-Insert the (WarpScript)[http://www.warp10.io/reference/] to execute on the input in the editor in the config of the warpscript node.
+Insert the [WarpScript](http://www.warp10.io/reference/) to execute on the input in the editor in the config of the warpscript node.
 
 ## Send a message as output
 
