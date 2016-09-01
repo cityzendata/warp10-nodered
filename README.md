@@ -4,7 +4,7 @@ This module can be used to execute some WarpScript with node-red. This will be d
 
 ## Input 
 
-If an input is added before the warpscript node, then it pushes the message contained in it directly on the stack. If the message contains primitv types they are pushed as if on warpscript (String, Number and boolean), array are converted in List, object in Map, null in NULL, and Buffer in utf-8 string. 
+If an input is added before the warpscript node, then it pushes the message contained in it directly on the stack. If the message contains any primitives types, they are pushed as if on warpscript (String, Number and boolean), array are converted in List, object in Map, null in NULL, and Buffer in utf-8 string. 
 
 A message on WarpScript have the following form:  
 
@@ -18,7 +18,7 @@ Insert the [WarpScript](http://www.warp10.io/reference/) to execute on the input
 
 ## Send a message as output
 
-In the config of the warpscript, it possible to enter as many output as possible in node-red. To send message to specific output let a map on the top of the stack. For example the following WarpScript code takes as input a message, store it in a variable then send two output message: one to the first output configured (transfered the message received), and then send a second output to another output with a new message containg a "test" payload.
+In the config of the warpscript, it possibles to enter as many output as possible in node-red. To send messages to specific output define a map on the top of the stack. For example the following WarpScript code takes as input a message, store it in a variable then send two output messages: one to the first output configured (transfered the message received), and then send a second one to another output with a new message containing a "test" payload.
 
 ```
   'msg' STORE
